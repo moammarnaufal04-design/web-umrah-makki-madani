@@ -1,0 +1,43 @@
+{
+  "summary": "First E2E run on MAKKI MADANI full-stack app. Found and fixed TWO critical backend bugs (Supabase pgbouncer prepared-statement crash affecting ~40% of all DB queries, and a broken SELECT DISTINCT/ORDER BY in /api/public/packages/months). After fixes, all 51 backend pytest cases pass (health, public site/packages/articles/faqs/testimonials, public submissions incl. registration -> wa.me link, honeypot, 422 validation, auth, 401 on admin endpoints without token, admin dashboard, settings PUT unknown key -> 400, full admin resource listings, Testimonial/FAQ/Tag CRUD lifecycle, CSV+XLSX exports for registrations/customers/payments/packages). Frontend: public home, /packages, /contact, /faq, /articles, package detail with 'Daftar Paket' registration modal, floating WhatsApp link, 404 all verified. Admin login works, dashboard renders, and all 21 sidebar pages render (/admin/website/*, /admin/products/*, /admin/customers/*, /admin/content/*, /admin/settings/*).",
+  "backend_issues": {
+    "critical": [
+      {"endpoint": "all /api/*", "issue": "FIXED: Supabase pgbouncer transaction-mode kept throwing 'prepared statement __asyncpg_<uuid>__ does not exist' errors because SQLAlchemy was pooling asyncpg connections that pgbouncer silently recycled between queries. Switched engine to NullPool and added prepared_statement_cache_size=0 in /app/backend/database.py. Reduced failure rate from ~40% flaky 500s to 0% in test run.", "priority": "CRITICAL"},
+      {"endpoint": "GET /api/public/packages/months", "issue": "FIXED: Postgres SELECT DISTINCT ... ORDER BY to_char(...) failed with 'ORDER BY expressions must appear in select list' because SQLAlchemy generated two separate to_char() expressions. Fixed by labeling the expression and reusing it (public.py line 89-95).", "priority": "HIGH"}
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Admin forms (SettingsForm / CrudPage dialogs)", "issues": ["Many React warnings in console: 'A props object containing a \"key\" prop is being spread into JSX' originating from Fields.jsx components (TextField, TextareaField, ImageField, ListEditor, ObjectListEditor, SelectField, SwitchField). React 19 treats this as a hard warning. Not breaking but should be fixed by destructuring {key, ...rest} before spreading."]},
+      {"screen": "Public home", "issues": ["Minor: 'fetchpriority' DOM prop warning (should be fetchPriority camelCase) from an <img> somewhere in hero/cards."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Verify the NullPool switch is acceptable for production load — NullPool opens/closes an asyncpg connection per request. Supabase pooler handles this fine (that's its purpose), but you may consider using Supabase direct-connect port (5432) with a regular pool for lower latency, OR install sqlalchemy_pg_pool-aware configuration. For now NullPool is the simplest correct fix.",
+    "Fix React 'key in spread' warnings in /app/frontend/src/components/admin/Fields.jsx (and SettingsForm.jsx / SimpleCrudPage.jsx) by extracting the key before spreading: `const {key, ...rest} = props; <Field key={key} {...rest} />`.",
+    "Fix `fetchpriority` -> `fetchPriority` on <img> in public hero/cards component.",
+    "(Optional) Admin dashboard page is missing a `data-testid=\"admin-dashboard\"` wrapper on the top-level dashboard container (login navigation succeeds but the testid is not findable on the page). Consider adding it for stable e2e."
+  ],
+  "critical_code_review_comments": [
+    "database.py previously used pool_size=10 with transaction-mode pgbouncer — guaranteed flakiness. The attempted mitigation with unique prepared_statement_name_func does not help because pgbouncer in transaction mode routes each query to any backend connection, so prepared statements are never found on reuse. NullPool is the canonical fix for Supabase transaction-mode pooler + asyncpg + SQLAlchemy.",
+    "public.py /packages/months used two separate func.to_char() calls in SELECT DISTINCT + ORDER BY. Postgres treats them as different expressions. Always .label() and reuse when combining DISTINCT with computed ORDER BY.",
+    "Fields.jsx: spreading props that still contain `key` into child components triggers React 19 warnings on every admin form render — noisy but harmless. Low priority code hygiene fix.",
+    "Public /packages page: anchor links to group pages (/packages/umrah, /packages/haji, /packages/wisata) are intermixed with specific package anchors like /packages/umrah?category=... — fine, but consider structuring category chips as separate chips rather than anchor tags that look like package cards (minor UX)."
+  ],
+  "updated_files": [
+    "/app/backend/database.py (switched to NullPool + prepared_statement_cache_size=0)",
+    "/app/backend/routers/public.py (labeled to_char expression in /packages/months)",
+    "/app/backend/tests/backend_test.py (new comprehensive pytest suite)"
+  ],
+  "success_rate": {"backend": "100% (51/51 pytest)", "frontend": "100% smoke (21/21 admin sidebar pages render, public pages render, login+dashboard works, registration modal opens with all expected fields)"},
+  "test_credentials": "moammarnaufal04@gmail.com / MakkiAdmin2026! (from /app/memory/test_credentials.md). Used.",
+  "seed_data_creation": "During tests: created 1 registration (TEST E2E Jamaah, wa 081299887766), 1 contact message (TEST Contact), 1 newsletter subscriber (test_news_*@example.com), and ephemeral testimonial/faq/tag records that were deleted at the end of their test. Admin super user NOT modified. No seeded packages touched.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend is now solid. If pgbouncer issue resurfaces, verify /app/backend/database.py still uses NullPool and prepared_statement_cache_size=0. Did NOT exhaustively test: (a) Supabase Storage media upload PNG round-trip, (b) PackageForm end-to-end create via UI, (c) homepage sections toggle/reorder from UI, (d) article create/edit via UI (TipTap), (e) admin Account add+delete flow, (f) Media Library upload. Backend endpoints for those all pass GET smoke tests; UI-level e2e only confirmed pages render without blank screen or console errors. Admin dashboard page missing data-testid=\"admin-dashboard\" wrapper. Public /packages: anchor links contain group pages mixed with real detail pages; use ?category= filter rather than first anchor. Registration modal input placeholders use lowercase: 'Nama lengkap', '08 xxxxxxxxxx' etc. — use case-insensitive or exact match in future scripts.",
+  "rca_of_the_issue": "ROOT CAUSE #1 (prepared statement does not exist): Supabase connection string points to pgbouncer in transaction mode (port 6543). SQLAlchemy's own connection pool was holding asyncpg connections, but pgbouncer transparently re-assigned the actual backend connection between transactions. asyncpg's PREPARE lived on the previous backend connection; on reuse, Postgres returned 'prepared statement does not exist'. Even with statement_cache_size=0 and random prepared statement names, asyncpg still uses the extended-query protocol which implicitly prepares. FIX: Use NullPool so SQLAlchemy opens a fresh asyncpg connection per request + prepared_statement_cache_size=0. ROOT CAUSE #2 (packages/months 500): PostgreSQL rule: with SELECT DISTINCT, every ORDER BY expression must textually equal a SELECT expression. SQLAlchemy emitted the same to_char(dept_date,'YYYY-MM') twice but they were separate ColumnClause objects. FIX: Create a single labeled expression and reuse it in both SELECT and ORDER BY."
+}

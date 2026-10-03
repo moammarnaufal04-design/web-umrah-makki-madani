@@ -9,20 +9,21 @@ import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { PageHeader } from "@/components/admin/Common";
 
 export function renderField(f, value, set, prefix = "setting") {
-  const common = { key: f.key, label: f.label, hint: f.hint, className: f.full ? "md:col-span-2" : "", testId: `${prefix}-${f.key}` };
+  const k = f.key;
+  const common = { label: f.label, hint: f.hint, className: f.full ? "md:col-span-2" : "", testId: `${prefix}-${k}` };
   switch (f.type) {
-    case "textarea": return <TextareaField {...common} rows={f.rows || 3} value={value} onChange={(v) => set(f.key, v)} />;
-    case "number": return <TextField {...common} type="number" value={value} onChange={(v) => set(f.key, v)} />;
-    case "toggle": return <SwitchField {...common} value={value} onChange={(v) => set(f.key, v)} className={common.className} />;
-    case "image": return <ImageField {...common} value={value} onChange={(v) => set(f.key, v)} folder={f.folder || "general"} accept={f.accept || "image"} />;
-    case "list": return <ListEditor {...common} value={value || []} onChange={(v) => set(f.key, v)} placeholder={f.placeholder || "Tambah"} />;
-    case "objects": return <ObjectListEditor {...common} value={value || []} onChange={(v) => set(f.key, v)} fields={f.fields} itemLabel={f.itemLabel} />;
-    case "select": return <SelectField {...common} value={value} onChange={(v) => set(f.key, v)} options={f.options} />;
-    case "richtext": return <div key={f.key} className="md:col-span-2"><label className="field-label">{f.label}</label><RichTextEditor value={value || ""} onChange={(v) => set(f.key, v)} testId={`${prefix}-${f.key}`} /></div>;
+    case "textarea": return <TextareaField key={k} {...common} rows={f.rows || 3} value={value} onChange={(v) => set(k, v)} />;
+    case "number": return <TextField key={k} {...common} type="number" value={value} onChange={(v) => set(k, v)} />;
+    case "toggle": return <SwitchField key={k} {...common} value={value} onChange={(v) => set(k, v)} />;
+    case "image": return <ImageField key={k} {...common} value={value} onChange={(v) => set(k, v)} folder={f.folder || "general"} accept={f.accept || "image"} />;
+    case "list": return <ListEditor key={k} {...common} value={value || []} onChange={(v) => set(k, v)} placeholder={f.placeholder || "Tambah"} />;
+    case "objects": return <ObjectListEditor key={k} {...common} value={value || []} onChange={(v) => set(k, v)} fields={f.fields} itemLabel={f.itemLabel} />;
+    case "select": return <SelectField key={k} {...common} value={value} onChange={(v) => set(k, v)} options={f.options} />;
+    case "richtext": return <div key={k} className="md:col-span-2"><label className="field-label">{f.label}</label><RichTextEditor value={value || ""} onChange={(v) => set(k, v)} testId={`${prefix}-${k}`} /></div>;
     case "color": return (
-      <div key={f.key} className={common.className}><label className="field-label">{f.label}</label><div className="flex gap-2"><input type="color" value={value || "#000000"} onChange={(e) => set(f.key, e.target.value)} className="h-9 w-12 cursor-pointer rounded border" data-testid={`${prefix}-${f.key}`} /><TextField value={value} onChange={(v) => set(f.key, v)} className="flex-1" /></div>{f.hint && <p className="mt-1 text-[11px] text-muted-foreground">{f.hint}</p>}</div>
+      <div key={k} className={common.className}><label className="field-label">{f.label}</label><div className="flex gap-2"><input type="color" value={value || "#000000"} onChange={(e) => set(k, e.target.value)} className="h-9 w-12 cursor-pointer rounded border" data-testid={`${prefix}-${k}`} /><TextField value={value} onChange={(v) => set(k, v)} className="flex-1" /></div>{f.hint && <p className="mt-1 text-[11px] text-muted-foreground">{f.hint}</p>}</div>
     );
-    default: return <TextField {...common} value={value} onChange={(v) => set(f.key, v)} placeholder={f.placeholder} />;
+    default: return <TextField key={k} {...common} value={value} onChange={(v) => set(k, v)} placeholder={f.placeholder} />;
   }
 }
 

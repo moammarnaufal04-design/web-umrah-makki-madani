@@ -36,7 +36,7 @@ export function Hero({ section }) {
         <div className="relative lg:col-span-6">
           <div className="absolute -right-4 -top-4 h-full w-full rounded-[2rem] border border-accent/40 lg:-right-6 lg:-top-6" aria-hidden="true" />
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-muted shadow-soft sm:aspect-[5/4] lg:aspect-[4/5]">
-            {c.image_url ? <img src={c.image_url} alt={section.title || "Makki Madani"} className="h-full w-full object-cover" fetchpriority="high" /> : <div className="flex h-full items-center justify-center text-muted-foreground">Gambar hero belum diatur</div>}
+            {c.image_url ? <img src={c.image_url} alt={section.title || "Makki Madani"} className="h-full w-full object-cover" fetchPriority="high" /> : <div className="flex h-full items-center justify-center text-muted-foreground">Gambar hero belum diatur</div>}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/70 to-transparent p-6 text-white">
               <div className="text-xs uppercase tracking-[0.2em] text-white/80">{brand.legal_name}</div>
               <div className="mt-1 font-serif text-lg">{brand.tagline}</div>

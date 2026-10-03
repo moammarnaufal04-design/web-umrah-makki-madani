@@ -47,11 +47,11 @@ export const SwitchField = ({ label, value, onChange, hint, testId, className })
   </div>
 );
 
-export function ListEditor({ label, value = [], onChange, placeholder = "Tambah item", hint, testId = "list-editor" }) {
+export function ListEditor({ label, value = [], onChange, placeholder = "Tambah item", hint, className, testId = "list-editor" }) {
   const update = (i, v) => onChange(value.map((x, j) => (j === i ? v : x)));
   const move = (i, d) => { const next = [...value]; const [item] = next.splice(i, 1); next.splice(i + d, 0, item); onChange(next); };
   return (
-    <Field label={label} hint={hint}>
+    <Field label={label} hint={hint} className={className}>
       <div className="space-y-2" data-testid={testId}>
         {value.map((v, i) => (
           <div key={i} className="flex gap-2">
@@ -67,12 +67,12 @@ export function ListEditor({ label, value = [], onChange, placeholder = "Tambah 
   );
 }
 
-export function ObjectListEditor({ label, value = [], onChange, fields, itemLabel = "Item", hint, testId = "object-list" }) {
+export function ObjectListEditor({ label, value = [], onChange, fields, itemLabel = "Item", hint, className, testId = "object-list" }) {
   const update = (i, k, v) => onChange(value.map((x, j) => (j === i ? { ...x, [k]: v } : x)));
   const move = (i, d) => { const next = [...value]; const [item] = next.splice(i, 1); next.splice(i + d, 0, item); onChange(next); };
   const empty = Object.fromEntries(fields.map((f) => [f.key, f.type === "list" ? [] : ""]));
   return (
-    <Field label={label} hint={hint}>
+    <Field label={label} hint={hint} className={className}>
       <div className="space-y-3" data-testid={testId}>
         {value.map((item, i) => (
           <div key={i} className="rounded-lg border bg-muted/30 p-3">

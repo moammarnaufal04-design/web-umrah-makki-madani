@@ -88,8 +88,9 @@ async def list_packages(
 
 @router.get("/packages/months")
 async def package_months(db: AsyncSession = Depends(get_db)):
+    month_expr = func.to_char(Package.departure_date, "YYYY-MM").label("ym")
     rows = (await db.execute(
-        select(func.to_char(Package.departure_date, "YYYY-MM")).where(PUBLIC_PACKAGE_FILTER, Package.departure_date.is_not(None)).distinct().order_by(func.to_char(Package.departure_date, "YYYY-MM"))
+        select(month_expr).where(PUBLIC_PACKAGE_FILTER, Package.departure_date.is_not(None)).distinct().order_by(month_expr)
     )).scalars().all()
     return rows
 
