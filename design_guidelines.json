@@ -1,0 +1,100 @@
+{
+  "project_name": "MAKKI MADANI TOUR & TRAVEL",
+  "tagline": "Teman Perjalanan Menuju Tanah Suci",
+  "archetype": "ORGANIC & EARTHY + SWISS ELEGANCE (Islamic Premium Travel)",
+  "emotional_tone": "Elegant, Trustworthy, Premium, Warm, Serene, Professional, Modern",
+  "theme_strategy": {
+    "default_mode": "light",
+    "dark_mode_support": true,
+    "description": "Clean, light & airy aesthetic with rich Biru Tosca (#0F766E), deep navy contrast (#0F172A), warm gold accents (#D97706), and bone-cream background fills (#F8FAF9). Avoid standard full-screen gradients and heavy decorative repeating arabesque lattices; rely on geometry, crisp shadows, elegant serif headers, and subtle metallic gold borders."
+  },
+  "colors": {
+    "primary": {
+      "biru_tosca": "#0F766E",
+      "biru_tosca_hover": "#0D9488",
+      "biru_tosca_light": "#CCFBF1",
+      "biru_tosca_dark": "#115E59"
+    },
+    "secondary": {
+      "deep_navy": "#0F172A",
+      "slate_dark": "#1E293B",
+      "pure_white": "#FFFFFF",
+      "cream_bg": "#F8FAF9"
+    },
+    "accents": {
+      "warm_gold": "#D97706",
+      "gold_hover": "#B45309",
+      "soft_gold": "#FEF3C7",
+      "emerald_light": "#D1FAE5"
+    },
+    "status_colors": {
+      "AVAILABLE": {
+        "bg": "bg-emerald-50 text-emerald-700 border-emerald-200",
+        "label": "Tersedia"
+      },
+      "LIMITED SEATS": {
+        "bg": "bg-amber-50 text-amber-700 border-amber-200",
+        "label": "Sisa Sedikit"
+      },
+      "FULL": {
+        "bg": "bg-rose-50 text-rose-700 border-rose-200",
+        "label": "Penuh"
+      },
+      "CLOSED": {
+        "bg": "bg-slate-100 text-slate-700 border-slate-300",
+        "label": "Ditutup"
+      },
+      "SOLD OUT": {
+        "bg": "bg-gray-100 text-gray-800 border-gray-300",
+        "label": "Habis"
+      }
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
+      "body": "'Plus Jakarta Sans', 'Outfit', system-ui, sans-serif",
+      "mono": "'JetBrains Mono', monospace"
+    },
+    "scale": {
+      "hero_h1": "text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight leading-tight",
+      "section_h2": "text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-slate-900",
+      "subsection_h3": "text-xl sm:text-2xl font-serif font-semibold text-slate-800",
+      "card_title": "text-lg sm:text-xl font-sans font-bold text-slate-900",
+      "body_text": "text-sm sm:text-base font-sans text-slate-600 leading-relaxed",
+      "caption": "text-xs font-sans uppercase tracking-widest text-teal-800 font-semibold"
+    }
+  },
+  "spacing_and_layout": {
+    "grid_mode": "Tetris Asymmetric for marketing, High Density for Admin Dashboard",
+    "container_padding": "px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto",
+    "card_padding": "p-6 sm:p-8",
+    "section_vertical_spacing": "py-16 sm:py-24"
+  },
+  "images": {
+    "hero_banner": "https://images.unsplash.com/photo-1720549973451-018d3623b55a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHszfHxtYWtrYWglMjBrYWFiYSUyMHBpbGdyaW1zJTIwdW1yYWglMjBoYWpqfGVufDB8fHx8MTc5MTAwNzIwMXww&ixlib=rb-4.1.0&q=85",
+    "makkah_kaaba": "https://images.unsplash.com/photo-1592326871020-04f58c1a52f3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHxfHxtYWtrYWglMjBrYWFiYSUyMHBpbGdyaW1zJTIwdW1yYWglMjBoYWpqfGVufDB8fHx8MTc5MTAwNzIwMXww&ixlib=rb-4.1.0&q=85",
+    "madinah_green_dome": "https://images.unsplash.com/photo-1667454496584-9838026037af?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzN8MHwxfHNlYXJjaHw0fHxtYWRpbmFoJTIwbW9zcXVlJTIwZ3JlZW4lMjBkb21lJTIwcHJvcGhldHxlbnwwfHx8fDE3OTEwMDcyMDF8MA&ixlib=rb-4.1.0&q=85",
+    "turkey_istanbul": "https://images.unsplash.com/photo-1567712595315-545da0d341b2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNzl8MHwxfHNlYXJjaHwyfHxpc3RhbmJ1bCUyMGJsdWUlMjBtb3NxdWUlMjBoYWdpYXNvcGhpYSUyMHR1cmtleSUyMHRyYXZlbHxlbnwwfHx8fDE3OTEwMDcyMDF8MA&ixlib=rb-4.1.0&q=85",
+    "placeholder_guide_avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=srgb&fm=jpg&fit=crop&w=300&h=300"
+  },
+  "key_components_mapping": {
+    "navbar": "Sticky header with backdrop-blur-md bg-white/90 z-50 with Biru Tosca brand accent, links: Beranda, Paket (Umrah, Haji, Wisata), Pembimbing, Tentang Kami, Artikel, Kontak, + Admin Login CTA",
+    "floating_whatsapp": "Fixed bottom right corner button (bottom-6 right-6 z-50) with pulsing status ring and direct prefilled chat trigger",
+    "package_card": "Includes status badge, price tag in Rupiah, duration pill, departure date, Garuda flight logo/badge, remaining seat quota progress bar, and 'Detail Paket' & 'Daftar Paket' CTAs",
+    "package_detail_page": "Hero flyer showcase, package title, status badge, pricing banner, departure details (garuda flights, BTJ-JED), Hotel Makkah/Madinah stars, Pembimbing/Tokoh card with quote, detailed day-by-day Itinerary accordion, included/excluded checklist, photo gallery, FAQ, and sticky bottom booking drawer",
+    "public_registration_modal": "Form with name, gender, phone/WhatsApp, address, email. On submit shows confirmation screen with direct WhatsApp follow-up button containing prefilled message",
+    "admin_dashboard": "Enterprise grade travel management system with KPI cards, Recharts visualization, data tables with search/filter/export CSV, package builder, Jamaah customer records, and CMS content editor"
+  },
+  "testing_attributes": {
+    "required": true,
+    "format": "kebab-case data-testid on all interactive elements (buttons, inputs, tables, modals, tabs)"
+  },
+  "instructions_to_main_agent": [
+    "Ensure all components use standard JS/JSX syntax compatible with Create React App setup.",
+    "Import UI primitives from src/components/ui/ directory (button, card, dialog, tabs, dropdown-menu, sheet, table, etc.).",
+    "Always apply data-testid attribute to interactive buttons, links, inputs, and modals.",
+    "Implement CMS state cleanly so Admin edits immediately affect the public website views.",
+    "Ensure natural Indonesian phrasing throughout the copy (e.g. 'Teman Perjalanan Menuju Tanah Suci', 'Konsultasi WhatsApp', 'Daftar Paket')."
+  ]
+}
